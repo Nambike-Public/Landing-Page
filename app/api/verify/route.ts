@@ -7,6 +7,8 @@ const supabase = createClient(
   process.env.SUPABASE_ANON_KEY!
 );
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const token = searchParams.get("token");

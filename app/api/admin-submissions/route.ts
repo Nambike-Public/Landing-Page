@@ -7,6 +7,8 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_KEY! // Full access key (never expose in frontend!)
 );
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     const { data, error } = await supabase.from("submissions_verified").select("*");

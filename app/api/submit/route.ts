@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 
      // Send verification email
      await resend.emails.send({
-       from: "noreply@nambike.com", // must be verified in Resend
+       from: "noreply@nambike.in", // must be verified in Resend
        to: email,
        subject: "Welcome to Nambike - Please verify your email",
        html: `

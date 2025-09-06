@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "vercel-build": "echo 'No build step required'"
   },
   "dependencies": {
     "next": "14.2.3",

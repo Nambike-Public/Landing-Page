@@ -5,8 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "vercel-build": "echo 'No build step required'"
+    "start": "next start"
+  },
+  "engines": {
+    "node": "18.x"
   },
   "dependencies": {
     "next": "14.2.3",

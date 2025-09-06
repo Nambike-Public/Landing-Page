@@ -11,12 +11,12 @@ export default function Hero() {
           Helps Build, Foster & Nurture <b style={{ color: "#3b82f6" }}>Meaningful Relationships</b>
         </p>
         <div className="flex justify-center space-x-4">
-          <button className="bg-gradient-to-r from-blue-500 to-blue-600 px-8 py-3 rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-200">
+          <a href="/about" className="bg-gradient-to-r from-blue-500 to-blue-600 px-8 py-3 rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-200">
             Learn More
-          </button>
-          <button className="bg-gray-800 border border-gray-600 px-8 py-3 rounded-lg font-medium hover:bg-gray-700 transition-all duration-200">
+          </a>
+          <a className="bg-gray-800 border border-gray-600 px-8 py-3 rounded-lg font-medium hover:bg-gray-700 transition-all duration-200">
             Sign Up
-          </button>
+          </a>
         </div>
       </div>
     </section>

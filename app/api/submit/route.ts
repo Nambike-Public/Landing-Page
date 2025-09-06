@@ -5,38 +5,55 @@ import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 
 const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_ANON_KEY!
+	process.env.SUPABASE_URL!,
+	process.env.SUPABASE_ANON_KEY!
 );
 
 const resend = new Resend(process.env.RESEND_API_KEY!);
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
-  try {
-    const { name, email, message } = await req.json();
-    if (!email) {
-      return NextResponse.json({ error: "Email is required" }, { status: 400 });
-    }
+	try {
+		const { name, email, message } = await req.json();
+		if (!email) {
+			return NextResponse.json({ error: "Email is required" }, { status: 400 });
+		}
 
-    const token = uuidv4();
+		const token = uuidv4();
 
-    // Store in DB as unverified
-    const { error } = await supabase
-      .from("submissions_verified")
-      .insert([{ name, email, message, token }]);
+		// First, try to insert new record
+		const { error: insertError } = await supabase
+			.from("submissions_verified")
+			.insert([{ name, email, message, token }]);
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
+		if (insertError) {
+			// Check if it's a duplicate email error
+			if (insertError.message.includes('duplicate') || insertError.message.includes('unique') || insertError.code === '23505') {
+				console.log('Duplicate email detected, updating existing record:', email);
+				
+				// // Update existing record with new data
+				// const { error: updateError } = await supabase
+				// 	.from("submissions_verified")
+				// 	.update({ name, message, token })
+				// 	.eq('email', email);
 
-     // Send verification email
-     await resend.emails.send({
-       from: "noreply@nambike.in", // must be verified in Resend
-       to: email,
-       subject: "Welcome to Nambike - Please verify your email",
-       html: `
+				// if (updateError) {
+				// 	console.log('Update error:', updateError);
+				// 	return NextResponse.json({ error: "There was an error processing your submission. Please try again later." }, { status: 500 });
+				// }
+			} else {
+				console.log('Database error:', insertError);
+				return NextResponse.json({ error: "There was an error processing your submission. Please try again later." }, { status: 500 });
+			}
+		}
+
+		// Send verification email
+		await resend.emails.send({
+			from: "noreply@nambike.in", // must be verified in Resend
+			to: email,
+			subject: "Welcome to Nambike - Please verify your email",
+			html: `
          <!DOCTYPE html>
          <html>
          <head>
@@ -49,9 +66,11 @@ export async function POST(req: Request) {
              <!-- Header with Logo -->
              <div style="text-align: center; margin-bottom: 40px;">
                <div style="display: inline-flex; align-items: center; gap: 12px; margin-bottom: 20px;">
-                 <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                   <span style="color: white; font-weight: bold; font-size: 18px;">N</span>
-                 </div>
+                 <img src="https://${
+										process.env.NEXT_PUBLIC_SITE_URL
+									}/assets/NambikeJustLogo.png" 
+                      alt="Nambike Logo" 
+                      style="width: 40px; height: 40px; border-radius: 50%; object-fit: contain; margin: 0 5px;" />
                  <h1 style="color: #ffffff; font-size: 28px; font-weight: 700; margin: 0;">Nambike</h1>
                </div>
                <p style="color: #9ca3af; font-size: 16px; margin: 0;">Revolutionizing Business Solutions with Cutting-Edge Technology</p>
@@ -59,7 +78,9 @@ export async function POST(req: Request) {
 
              <!-- Main Content -->
              <div style="background-color: #1a1a1a; border-radius: 12px; padding: 40px; border: 1px solid #374151;">
-               <h2 style="color: #ffffff; font-size: 24px; font-weight: 600; margin: 0 0 20px 0;">Welcome ${name || "there"}!</h2>
+               <h2 style="color: #ffffff; font-size: 24px; font-weight: 600; margin: 0 0 20px 0;">Welcome ${
+									name || "there"
+								}!</h2>
                
                <p style="color: #d1d5db; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
                  Thank you for reaching out to Nambike! We're excited to help you find meaningful relationship.
@@ -71,7 +92,9 @@ export async function POST(req: Request) {
 
                <!-- CTA Button -->
                <div style="text-align: center; margin: 30px 0;">
-                 <a href="https://${process.env.NEXT_PUBLIC_SITE_URL}/api/verify?token=${token}" 
+                 <a href="https://${
+										process.env.NEXT_PUBLIC_SITE_URL
+									}/api/verify?token=${token}" 
                     style="display: inline-block; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; transition: all 0.2s ease;">
                    Verify Email Address
                  </a>
@@ -79,8 +102,12 @@ export async function POST(req: Request) {
 
                <p style="color: #9ca3af; font-size: 14px; line-height: 1.5; margin: 30px 0 0 0;">
                  If the button doesn't work, you can also copy and paste this link into your browser:<br>
-                 <a href="https://${process.env.NEXT_PUBLIC_SITE_URL}/api/verify?token=${token}" style="color: #3b82f6; word-break: break-all;">
-                   https://${process.env.NEXT_PUBLIC_SITE_URL}/api/verify?token=${token}
+                 <a href="https://${
+										process.env.NEXT_PUBLIC_SITE_URL
+									}/api/verify?token=${token}" style="color: #3b82f6; word-break: break-all;">
+                   https://${
+											process.env.NEXT_PUBLIC_SITE_URL
+										}/api/verify?token=${token}
                  </a>
                </p>
              </div>
@@ -98,10 +125,13 @@ export async function POST(req: Request) {
          </body>
          </html>
        `,
-     });
+		});
 
-    return NextResponse.json({ success: true, message: "Verification email sent" });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
-  }
+		return NextResponse.json({
+			success: true,
+			message: "Verification email sent",
+		});
+	} catch (err: any) {
+		return NextResponse.json({ error: err.message }, { status: 500 });
+	}
 }

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favicon Resizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        input[type="file"] {
+            margin: 10px 0;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        .preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .preview-item {
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .preview-item canvas {
+            border: 1px solid #ccc;
+        }
+        .download-links {
+            margin-top: 20px;
+        }
+        .download-links a {
+            display: inline-block;
+            margin: 5px;
+            padding: 8px 16px;
+            background: #10b981;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Favicon Resizer for Nambike</h1>
+        <p>Upload your logo and download properly sized favicon files.</p>
+        
+        <input type="file" id="fileInput" accept="image/*">
+        <button onclick="resizeImages()">Resize Images</button>
+        <button onclick="downloadAll()">Download All</button>
+        
+        <div class="preview" id="preview"></div>
+        <div class="download-links" id="downloadLinks"></div>
+    </div>
+
+    <script>
+        let resizedImages = {};
+        
+        function resizeImages() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select an image file');
+                return;
+            }
+            
+            const img = new Image();
+            img.onload = function() {
+                const sizes = [
+                    { name: 'favicon-16x16.png', size: 16 },
+                    { name: 'favicon-32x32.png', size: 32 },
+                    { name: 'apple-touch-icon.png', size: 180 },
+                    { name: 'icon-192.png', size: 192 },
+                    { name: 'icon-512.png', size: 512 }
+                ];
+                
+                const preview = document.getElementById('preview');
+                const downloadLinks = document.getElementById('downloadLinks');
+                
+                preview.innerHTML = '';
+                downloadLinks.innerHTML = '';
+                resizedImages = {};
+                
+                sizes.forEach(({ name, size }) => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    canvas.width = size;
+                    canvas.height = size;
+                    
+                    // Draw the image resized to the canvas
+                    ctx.drawImage(img, 0, 0, size, size);
+                    
+                    // Convert to blob
+                    canvas.toBlob(function(blob) {
+                        resizedImages[name] = blob;
+                        
+                        // Create preview
+                        const previewItem = document.createElement('div');
+                        previewItem.className = 'preview-item';
+                        previewItem.innerHTML = `
+                            <canvas width="${size}" height="${size}"></canvas>
+                            <div>${name}<br>${size}x${size}</div>
+                        `;
+                        
+                        const previewCanvas = previewItem.querySelector('canvas');
+                        const previewCtx = previewCanvas.getContext('2d');
+                        previewCtx.drawImage(img, 0, 0, size, size);
+                        
+                        preview.appendChild(previewItem);
+                        
+                        // Create download link
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = name;
+                        link.textContent = `Download ${name}`;
+                        downloadLinks.appendChild(link);
+                    }, 'image/png');
+                });
+            };
+            
+            img.src = URL.createObjectURL(file);
+        }
+        
+        function downloadAll() {
+            Object.keys(resizedImages).forEach(name => {
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(resizedImages[name]);
+                link.download = name;
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>

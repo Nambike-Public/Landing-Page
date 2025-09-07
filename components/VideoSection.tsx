@@ -6,7 +6,7 @@ export default function VideoSection() {
 					<iframe
 						width="100%"
 						height="100%"
-						src="https://www.youtube.com/embed/037zIgGnye0?si=LvRzbhqV-8ek9mPM"
+						src="https://www.youtube.com/embed/COg309fUsDM?si=34CkA4uVaD3Mz5Mc"
 						title="YouTube video player"
 						frameBorder="0"
 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

@@ -71,6 +71,17 @@ export default function Careers() {
 									<p className="text-gray-300 mb-3">
 										Build scalable mobile applications.
 									</p>{" "}
+									<div className="flex flex-wrap gap-2">
+									<span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">
+											Native App Development Experience
+										</span>
+										<span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">
+											Tailwind
+										</span>
+										<span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">
+											Redux
+										</span>
+									</div>
 								</div>
 
 								<div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
@@ -126,7 +137,13 @@ export default function Careers() {
 											Kafka
 										</span>
 										<span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">
-											RabbitMQ
+											Docker
+										</span>
+										<span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">
+											AWS or Any Other Cloud Experience
+										</span>
+										<span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">
+											Any Other Object Oriented Language Like Java Experience
 										</span>
 									</div>
 								</div>
@@ -247,8 +264,13 @@ export default function Careers() {
 										to join Nambike
 									</li>
 									<li>
-										We'll review your application and get back to you within 5
-										business days
+										We'll review your application and get back to you
+									</li>
+									<li>
+										If you don't have relevant experience on the skills/tools mentioned. 
+										That's fine. Share a Cover Letter about your thoughts on the Products You have used to do Social Networking.
+										Share your experience, pain points, and how you would redesign it, if you can. 
+										And your plan on how you would plan to learn the skills/tools necessary to work on it.
 									</li>
 									<li>
 										If selected, we'll schedule an interview to learn more about

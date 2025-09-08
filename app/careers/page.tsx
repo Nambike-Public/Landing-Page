@@ -89,11 +89,17 @@ export default function Careers() {
 										Senior Full Stack Developer
 									</h3>
 									<p className="text-gray-300 mb-3">
-										Build scalable mobile applications.
+										Build scalable web applications.
 									</p>
 									<div className="flex flex-wrap gap-2">
 										<span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">
 											React
+										</span>
+										<span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">
+											Redux
+										</span>
+										<span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">
+											Next.Js
 										</span>
 										<span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">
 											Node.js
@@ -103,6 +109,9 @@ export default function Careers() {
 										</span>
 										<span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">
 											PostgreSQL
+										</span>
+										<span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">
+											Docker
 										</span>
 									</div>
 								</div>
@@ -143,7 +152,7 @@ export default function Careers() {
 											AWS or Any Other Cloud Experience
 										</span>
 										<span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">
-											Any Other Object Oriented Language Like Java Experience
+											Any Other OOP Language Like Java
 										</span>
 									</div>
 								</div>
@@ -219,7 +228,7 @@ export default function Careers() {
 									</h3>
 									<p className="text-gray-300 mb-3">
 										We are also looking for Non-Technical Interns who are
-										passionate about technology and want to learn and grow with
+										passionate about Technology and its Impact On Human Interaction and Want to learn and grow with
 										us.
 									</p>
 									<div className="flex flex-wrap gap-2">
@@ -268,13 +277,15 @@ export default function Careers() {
 									</li>
 									<li>
 										If you don't have relevant experience on the skills/tools mentioned. 
+										<br/>
 										That's fine. Share a Cover Letter about your thoughts on the Products You have used to do Social Networking.
+										<br/>
 										Share your experience, pain points, and how you would redesign it, if you can. 
-										And your plan on how you would plan to learn the skills/tools necessary to work on it.
+										<br/>
+										And your thoughts on how you would plan to learn the skills/tools necessary to implement it.
 									</li>
 									<li>
-										If selected, we'll schedule an interview to learn more about
-										you
+										If selected, we'll schedule an interview to learn more about you
 									</li>
 								</ol>
 							</div>

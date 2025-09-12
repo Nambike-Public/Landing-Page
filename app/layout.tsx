@@ -5,7 +5,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 export const metadata = {
 	title: "Nambike",
 	description:
-		"Revolutionizing Business Solutions with Cutting-Edge Technology",
+		"Revolutionizing Social Networking By Bringing, Building & Maintaing Trust",
 	icons: {
 		icon: [
 			{ url: "/favicon.ico", sizes: "any" },
